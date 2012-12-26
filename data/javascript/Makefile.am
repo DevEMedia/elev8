@@ -45,6 +45,7 @@ files_SCRIPTS = \
 	photocam.js \
 	photo.js \
 	popup.js \
+	prefs.js \
 	progressbar.js \
 	radio.js \
 	scroller.js \

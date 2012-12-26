@@ -50,6 +50,7 @@ libelm_la_SOURCES = \
 	CElmPhotocam.cc \
 	CElmPhoto.cc \
 	CElmPopup.cc \
+	CElmPrefs.cc \
 	CElmProgressBar.cc \
 	CElmRadio.cc \
 	CElmScroller.cc \

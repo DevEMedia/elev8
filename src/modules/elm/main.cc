@@ -39,6 +39,7 @@ using namespace v8;
 #include "CElmPhotocam.h"
 #include "CElmPhoto.h"
 #include "CElmPopup.h"
+#include "CElmPrefs.h"
 #include "CElmProgressBar.h"
 #include "CElmRadio.h"
 #include "CElmScroller.h"
@@ -238,6 +239,7 @@ void RegisterModule(Handle<Object> target)
    CElmPhotocam::Initialize(target);
    CElmPhoto::Initialize(target);
    CElmPopup::Initialize(target);
+   CElmPrefs::Initialize(target);
    CElmProgressBar::Initialize(target);
    CElmRadio::Initialize(target);
    CElmScroller::Initialize(target);

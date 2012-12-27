@@ -96,6 +96,7 @@ spawn_and_run(struct Server_Command *command)
 
    // From here is the child
    ecore_fork_reset();
+   eina_main_loop_define();
    ecore_con_server_del(server); // So the child won't be listening on socket
 
    if (chdir(command->current_dir) == -1)

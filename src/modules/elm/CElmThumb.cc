@@ -41,14 +41,6 @@ CElmThumb::~CElmThumb()
 
 void CElmThumb::Initialize(Handle<Object> target)
 {
-#ifdef ELM_ETHUMB
-   if (!elm_need_ethumb())
-     {
-        ELM_ERR("Cannot initialize ethumb!");
-        return;
-     }
-#endif
-
    target->Set(String::NewSymbol("Thumb"), GetTemplate()->GetFunction());
 }
 

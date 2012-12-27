@@ -438,7 +438,6 @@ load_elev8_modules()
 void
 execute_elev8_script(char *script, int argc, char *argv[])
 {
-   //TODO check if this is ok
    V8::SetFlagsFromCommandLine(&argc, argv, true);
 
    if ((!run_script(PACKAGE_LIB_DIR "/../init.js")) ||

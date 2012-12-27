@@ -161,6 +161,12 @@ static Handle<Value>
 init(const Arguments&)
 {
   elm_init(0, NULL);
+
+#ifdef ELM_ETHUMB
+   if (!elm_need_ethumb())
+     ELM_ERR("Cannot initialize ethumb!");
+#endif
+
   return Undefined();
 }
 

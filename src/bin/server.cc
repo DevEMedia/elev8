@@ -4,8 +4,8 @@
 #define SHUTDOWN_COMMAND 's'
 #define RUN_COMMAND 'r'
 
-#define CURRENT_DIR_SIZE 64
-#define SCRIPT_NAME_SIZE 32
+#define CURRENT_DIR_SIZE PATH_MAX
+#define SCRIPT_NAME_SIZE PATH_MAX
 
 using namespace v8;
 

@@ -395,25 +395,6 @@ flush_garbage_collector(void *, int , void *)
    return ECORE_CALLBACK_DONE;
 }
 
-static void
-daemonize()
-{
-   int pID = fork();
-
-   if (pID < 0)
-     {
-        ERR("Couldn't create server daemon");
-        exit(1);
-     }
-
-   if (pID > 0)
-     exit(0); // Parent stops
-
-   // Child go on.
-   ecore_fork_reset();
-   setsid(); // Child creates a session for itself
-}
-
 void
 load_elev8_modules()
 {
@@ -491,11 +472,7 @@ main(int argc, char *argv[])
    HandleScope handle_scope;
 
    if (args.server)
-     {
-        if (!args.no_daemonize)
-          daemonize();
-        server_start();
-     }
+     server_start();
    else if (args.shutdown)
      server_shutdown();
    else if (args.connect)

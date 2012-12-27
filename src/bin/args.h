@@ -11,7 +11,6 @@ extern "C" {
   typedef struct {
      Eina_Bool debug;
      Eina_Bool server;
-     Eina_Bool no_daemonize;
      Eina_Bool shutdown;
      Eina_Bool connect;
      Eina_Bool quit;

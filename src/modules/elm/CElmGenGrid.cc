@@ -310,16 +310,21 @@ Handle<Value> CElmGenGrid::clear(const Arguments &args)
 {
    if (args[0]->IsArray())
      {
-        Handle<Object> elements = args[0]->ToObject();
+        Local<Object> obj = args[0]->ToObject();
+        Local<Array> props = obj->GetOwnPropertyNames();
 
-        for (unsigned i = 0; ; ++i) {
-           Handle<Value> element = elements->Get(i);
-           if (element.IsEmpty())
-             break;
+        for (unsigned int i = 0, len = props->Length(); i < len; i++)
+          {
+             Local<Value> val = obj->Get(props->Get(i));
+             Item<CElmGenGrid> *item = Item<CElmGenGrid>::Unwrap(val);
 
-           Item<CElmGenGrid> *item = Item<CElmGenGrid>::Unwrap(element->ToObject());
-           elm_object_item_del(item->object_item);
-        }
+             if (!item)
+               item = Item<CElmGenGrid>::Unwrap
+                  (args.This()->Get(String::NewSymbol("elements"))->ToObject()->Get(val));
+
+             if (item)
+               elm_object_item_del(item->object_item);
+          }
 
         return Undefined();
      }
@@ -331,13 +336,13 @@ Handle<Value> CElmGenGrid::clear(const Arguments &args)
 void CElmGenGrid::SetSelected(Local<String>, Local<Value> value, const AccessorInfo &info)
 {
    Item<CElmGenGrid> *item = Item<CElmGenGrid>::Unwrap(info);
-   elm_genlist_item_selected_set(item->object_item, value->BooleanValue());
+   elm_gengrid_item_selected_set(item->object_item, value->BooleanValue());
 }
 
 Handle<Value> CElmGenGrid::GetSelected(Local<String>, const AccessorInfo &info)
 {
    Item<CElmGenGrid> *item = Item<CElmGenGrid>::Unwrap(info);
-   return Boolean::New(elm_genlist_item_selected_get(item->object_item));
+   return Boolean::New(elm_gengrid_item_selected_get(item->object_item));
 }
 
 void CElmGenGrid::SetTooltip(Local<String>, Local<Value> value, const AccessorInfo &info)

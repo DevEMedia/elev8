@@ -22,6 +22,23 @@ var window = elm.realise(elm.Window({
           expand: 'both',
           fill: 'both',
           elements: {}
+        }),
+        tool: elm.Toolbar({
+          fill: 'both',
+          select_mode: 'none',
+          elements: [
+            {
+              icon: 'delete',
+              label: 'Delete',
+              on_select: function() {
+                var items = [];
+                for (var i in grid_elements)
+                  if (grid_elements[i].data.check)
+                    items.push(grid_elements[i]);
+                window.elements.box.elements.grid.clear(items);
+              }
+            }
+          ]
         })
       }
     })
@@ -30,17 +47,26 @@ var window = elm.realise(elm.Window({
 
 var gengrid_item = function(image) {
   return {
-    data: image,
+    'data': {
+        image: image,
+        check: false
+    },
     'class' : {
       style: 'default',
       text: function(part) {
-        return this.data;
+        return this.data.image;
       },
       content: function(part) {
         if (part == 'elm.swallow.icon')
-          return elm.Icon({ lookup_order: 'fdo,theme', image: this.data });
+          return elm.Icon({ lookup_order: 'fdo,theme', image: this.data.image });
         if (part == 'elm.swallow.end')
-          return elm.Check({ propagate_events: false });
+          return elm.Check({
+              propagate_events: false,
+              state: this.data.check,
+              on_change: function() {
+                this.data.check = !this.data.check;
+              }.bind(this)
+          });
       },
       state: function(part) {
         return false
@@ -57,5 +83,5 @@ var grid_elements = window.elements.box.elements.grid.elements;
 for (var i = 0; i < icons.elementary.length; ++i)
   grid_elements[i] = gengrid_item(icons.elementary[i]);
 
-for (var i = icons.elementary.length; i < icons.freedesktop.length; ++i)
-  grid_elements[i] = gengrid_item(icons.freedesktop[i]);
+for (var i = 0; i < icons.freedesktop.length; ++i)
+  grid_elements[i + icons.elementary.length] = gengrid_item(icons.freedesktop[i]);

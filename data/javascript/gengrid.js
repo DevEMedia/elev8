@@ -17,6 +17,8 @@ var window = elm.realise(elm.Window({
       resize: true,
       elements: {
         grid: elm.Gengrid({
+          item_size_horizontal: 128,
+          item_size_vertical: 128,
           expand: 'both',
           fill: 'both',
           elements: {}
@@ -37,6 +39,8 @@ var gengrid_item = function(image) {
       content: function(part) {
         if (part == 'elm.swallow.icon')
           return elm.Icon({ lookup_order: 'fdo,theme', image: this.data });
+        if (part == 'elm.swallow.end')
+          return elm.Check({ propagate_events: false });
       },
       state: function(part) {
         return false

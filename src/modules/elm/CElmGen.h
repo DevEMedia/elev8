@@ -169,7 +169,13 @@ private:
       Item<T> *item = static_cast<Item<T> *>(_item);
       Handle<Value> content = CElmObject::Realise(result->ToObject(),
             item->jsObject->GetHiddenValue(Item<T>::str_parent));
-      evas_object_propagate_events_set(GetEvasObjectFromJavascript(content), EINA_FALSE);
+
+      Local<Value> propagate = content->ToObject()->Get(String::New("propagate_events"));
+
+      if (!propagate->IsUndefined())
+        evas_object_propagate_events_set(GetEvasObjectFromJavascript(content),
+                                         propagate->BooleanValue());
+
       return content.IsEmpty() ? NULL : GetEvasObjectFromJavascript(content);
    }
 

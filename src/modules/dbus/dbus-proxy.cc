@@ -123,7 +123,6 @@ Handle<Value> DProperties::Setter(Local<String> prop, Local<Value> val, const Ac
    append(iter, variant);
 
    edbus_proxy_send(self->proxy, msg, SetterCb, NULL, -1);
-   edbus_message_unref(msg);
    return val;
 }
 
@@ -672,8 +671,6 @@ Handle<Value> DProxy::Send(const Arguments& args)
      append(iter, args[args_cnt]);
 
    pending = edbus_proxy_send(self->proxy, msg, Send_Cb, NULL, -1);
-
-   edbus_message_unref(msg);
 
    return scope.Close(DPending::NewInstance(pending));
 }

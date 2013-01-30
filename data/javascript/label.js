@@ -15,6 +15,7 @@ new elm.Window({
                     label : "<b>This is a small label</b>",
                     weight : { x : 0.0, y : 0.0 },
                     align : { x : -1.0, y : -1.0 },
+                    slide_mode : 2,
                 }),
                 larger_label : elm.Label ({
                     label : "This is a larger label with newlines<br>" +
@@ -23,6 +24,7 @@ new elm.Window({
                            "formatting as it's fixed based on text<br>",
                     weight : { x : 0.0, y : 0.0 },
                     align : { x : -1.0, y : -1.0 },
+                    slide_mode : 0,
                 }),
                 linewrap_label : elm.Label ({
                     wrap : 1,
@@ -40,6 +42,7 @@ new elm.Window({
                     label : "This small label set to wrap",
                     weight : { x : 0.0, y : 0.0 },
                     align : { x : -1.0, y : -1.0 },
+                    slide_mode : 2,
                 }),
             },
         }),

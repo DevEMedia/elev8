@@ -7,14 +7,14 @@ using namespace v8;
 GENERATE_PROPERTY_CALLBACKS(CElmLabel, wrap);
 GENERATE_PROPERTY_CALLBACKS(CElmLabel, wrap_width);
 GENERATE_PROPERTY_CALLBACKS(CElmLabel, ellipsis);
-GENERATE_PROPERTY_CALLBACKS(CElmLabel, slide);
+GENERATE_PROPERTY_CALLBACKS(CElmLabel, slide_mode);
 GENERATE_PROPERTY_CALLBACKS(CElmLabel, slide_duration);
 
 GENERATE_TEMPLATE(CElmLabel,
                   PROPERTY(wrap),
                   PROPERTY(wrap_width),
                   PROPERTY(ellipsis),
-                  PROPERTY(slide),
+                  PROPERTY(slide_mode),
                   PROPERTY(slide_duration));
 
 CElmLabel::CElmLabel(Local<Object> _jsObject, CElmObject *parent)
@@ -78,14 +78,15 @@ Handle<Value> CElmLabel::ellipsis_get() const
    return Boolean::New(elm_label_ellipsis_get(eo));
 }
 
-void CElmLabel::slide_set(Handle<Value> value)
+void CElmLabel::slide_mode_set(Handle<Value> value)
 {
-   elm_label_slide_set(eo, value->BooleanValue());
+   elm_label_slide_mode_set(eo, (Elm_Label_Slide_Mode)value->ToNumber()->Value());
+   elm_label_slide_go(eo);
 }
 
-Handle<Value> CElmLabel::slide_get() const
+Handle<Value> CElmLabel::slide_mode_get() const
 {
-   return Boolean::New(elm_label_slide_get(eo));
+   return Integer::New(elm_label_slide_mode_get(eo));
 }
 
 void CElmLabel::slide_duration_set(Handle<Value> value)

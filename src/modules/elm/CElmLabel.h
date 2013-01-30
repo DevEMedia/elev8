@@ -28,8 +28,8 @@ public:
    void ellipsis_set(Handle<Value> value);
    Handle<Value> ellipsis_get() const;
 
-   void slide_set(Handle<Value> value);
-   Handle<Value> slide_get() const;
+   void slide_mode_set(Handle<Value> value);
+   Handle<Value> slide_mode_get() const;
 
    void slide_duration_set(Handle<Value> value);
    Handle<Value> slide_duration_get() const;

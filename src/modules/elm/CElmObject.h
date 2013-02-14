@@ -266,6 +266,8 @@ public:
    static Handle<Value> Realise(const Arguments& args);
 
    static Handle<Value> Realise(Handle<Value> desc, Handle<Value> parent);
+
+   static Handle<Value> Realise(Handle<Value> descValue, Evas_Object *parentl);
 };
 
 }

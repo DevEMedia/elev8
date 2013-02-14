@@ -34,6 +34,7 @@ libelm_la_SOURCES = \
 	CElmFileSelectorButton.cc \
 	CElmFileSelectorEntry.cc \
 	CElmFlip.cc \
+	CElmGadget.cc \
 	CElmGenGrid.cc \
 	CElmGenList.cc \
 	CElmGrid.cc \

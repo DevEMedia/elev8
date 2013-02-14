@@ -444,7 +444,7 @@ main(int argc, char *argv[])
      }
    INF("elev8 Logging initialized. %d", elev8_log_domain);
 
-   V8::AddMessageListener(message, Undefined());
+   V8::AddMessageListener(message);
    V8::SetCaptureStackTraceForUncaughtExceptions(true, 10, StackTrace::kDetailed);
 
    elev8_parse_argv(&args, argc, argv);

@@ -63,6 +63,7 @@ void CElmCtxPopup::ItemSelected(Handle<Value> item)
    if (on_item_select.IsEmpty() || !on_item_select->IsFunction())
      return;
 
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*on_item_select));
    Handle<Value> args[1] = { item };
    callback->Call(jsObject, 1, args);

@@ -816,6 +816,7 @@ void CElmObject::pointer_set(Handle<Value>)
 
 void CElmObject::OnAnimate()
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.animate));
    Handle<Value> arguments[1] = { jsObject };
    callback->Call(jsObject, 1, arguments);
@@ -851,6 +852,7 @@ void CElmObject::on_animate_set(Handle<Value> val)
 
 void CElmObject::OnClick(void *event_info)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.click));
 
    if (event_info)

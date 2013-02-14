@@ -329,8 +329,8 @@ Handle<Value> CElmPrefs::Setter(Local<String> name, Local<Value> val,
 
 void CElmPrefs::PageChangedWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_page_changed"))));
 
    if (!callback->IsFunction()) return;
@@ -341,8 +341,8 @@ void CElmPrefs::PageChangedWrapper(void *data, Evas_Object *, void *event_info)
 
 void CElmPrefs::PageSavedWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_page_saved"))));
 
    if (!callback->IsFunction()) return;
@@ -353,8 +353,8 @@ void CElmPrefs::PageSavedWrapper(void *data, Evas_Object *, void *event_info)
 
 void CElmPrefs::PageResetWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_page_reset"))));
 
    if (!callback->IsFunction()) return;
@@ -365,8 +365,8 @@ void CElmPrefs::PageResetWrapper(void *data, Evas_Object *, void *event_info)
 
 void CElmPrefs::PageLoadedWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_page_loaded"))));
 
    if (!callback->IsFunction()) return;
@@ -377,8 +377,8 @@ void CElmPrefs::PageLoadedWrapper(void *data, Evas_Object *, void *event_info)
 
 void CElmPrefs::ItemChangedWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_item_changed"))));
 
    if (!callback->IsFunction()) return;
@@ -389,8 +389,8 @@ void CElmPrefs::ItemChangedWrapper(void *data, Evas_Object *, void *event_info)
 
 void CElmPrefs::ActionWrapper(void *data, Evas_Object *, void *event_info)
 {
+   HandleScope scope;
    Handle<Object> obj = static_cast<CElmPrefs*>(data)->jsObject;
-
    Handle<Function> callback(Function::Cast(*obj->Get(String::NewSymbol("on_action"))));
 
    if (!callback->IsFunction()) return;

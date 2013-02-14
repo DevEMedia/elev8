@@ -170,6 +170,7 @@ Handle<Value> CElmEntry::on_activate_get() const
 
 void CElmEntry::OnActivate()
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.on_activate));
    Handle<Value> args[1] = { entry_get() };
    callback->Call(jsObject, 1, args);
@@ -208,6 +209,7 @@ void CElmEntry::OnChangeWrapper(void *data, Evas_Object *, void *)
 
 void CElmEntry::OnChange()
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.on_change));
    Handle<Value> args[1] = { jsObject };
    callback->Call(jsObject, 1, args);

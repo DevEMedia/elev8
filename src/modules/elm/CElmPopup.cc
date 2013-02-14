@@ -124,6 +124,7 @@ void CElmPopup::ItemSelected(int item_index)
    Handle<Value> item = cached.items->Get(item_index);
    if (item.IsEmpty())
      return;
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.item_select));
    Handle<Value> args[1] = { item };
    callback->Call(jsObject, 1, args);

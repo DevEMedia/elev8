@@ -141,6 +141,7 @@ private:
 
    static Handle<Value> Call(void *_item, Handle<String> func, const char *part)
    {
+      HandleScope scope;
       Item<T> *item = static_cast<Item<T> *>(_item);
       Local<Value> klass = item->jsObject->Get(Item<T>::str_class);
       if (!klass->IsObject()) return Undefined();

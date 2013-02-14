@@ -645,6 +645,7 @@ void CElmWindow::Initialize(Handle<Object> target)
 
 void CElmWindow::quit(void *data, Evas_Object *, void *)
 {
+   HandleScope scope;
    CElmObject *self = static_cast<CElmObject*>(data);
    Handle<Object> obj = self->GetJSObject();
 

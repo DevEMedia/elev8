@@ -121,6 +121,7 @@ Handle<Value> CElmActionSlider::magnet_get() const
 
 void CElmActionSlider::OnSelect(void *event_info)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.select));
    char *label = (char *)event_info;
    Handle<Value> args[2] = { jsObject, Undefined()};

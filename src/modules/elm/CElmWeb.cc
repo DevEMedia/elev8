@@ -235,6 +235,7 @@ void CElmWeb::on_load_progress_set(Handle<Value> val)
 
 void CElmWeb::OnLoadProgress()
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.on_load_progress));
    Handle<Value> args[1] = { Number::New(elm_web_load_progress_get(eo)) };
    callback->Call(jsObject, 1, args);
@@ -274,6 +275,7 @@ void CElmWeb::on_link_hover_in_set(Handle<Value> val)
 
 void CElmWeb::OnLinkHoverIn(char *url, char *title)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.on_link_hover_in));
    Handle<Value> args[2] = { String::New(url), String::New(title) };
    callback->Call(jsObject, 2, args);
@@ -314,6 +316,7 @@ void CElmWeb::on_link_hover_out_set(Handle<Value> val)
 
 void CElmWeb::OnLinkHoverOut()
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.on_link_hover_out));
    Handle<Value> args[] = { };
    callback->Call(jsObject, 0, args);
@@ -353,6 +356,7 @@ void CElmWeb::on_title_change_set(Handle<Value> val)
 
 void CElmWeb::OnTitleChange()
 {
+   HandleScope scope;
    const char *title = elm_web_title_get(eo);
    Handle<Function> callback(Function::Cast(*cb.on_title_change));
    Handle<Value> args[1] = { String::New(title ? title : "") };
@@ -393,6 +397,7 @@ void CElmWeb::on_uri_change_set(Handle<Value> val)
 
 void CElmWeb::OnUriChange()
 {
+   HandleScope scope;
    const char *uri = elm_web_uri_get(eo);
    Handle<Function> callback(Function::Cast(*cb.on_uri_change));
    Handle<Value> args[1] = { String::New(uri ? uri : "") };

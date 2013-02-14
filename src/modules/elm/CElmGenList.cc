@@ -337,6 +337,7 @@ void CElmGenList::homogeneous_set(Handle<Value> value)
 
 void CElmGenList::OnLongPress(void *event_info)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.longpress));
    Item<CElmGenList> *item = static_cast< Item<CElmGenList> *>
       (elm_object_item_data_get((Elm_Object_Item *)event_info));
@@ -429,6 +430,7 @@ Handle<Value> CElmGenList::bring_in_item(const Arguments& args)
 
 void CElmGenList::OnScrolledOverEdge(Persistent<Value> edge_callback)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*edge_callback));
    Handle<Value> args[1] = { };
    callback->Call(jsObject, 0, args);

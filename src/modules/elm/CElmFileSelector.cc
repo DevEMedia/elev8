@@ -118,6 +118,7 @@ void CElmFileSelector::OnDone(void *event_info)
    if (event_info == NULL)
      return;
 
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.done));
    Handle<Value> args[2] = { jsObject, String::New((const char *)event_info) };
    callback->Call(jsObject, 2, args);

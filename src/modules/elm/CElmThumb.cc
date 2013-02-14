@@ -111,6 +111,7 @@ void CElmThumb::editable_set(Handle<Value> val)
 
 void CElmThumb::OnGenerateStart(void *)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.generate_start));
    Handle<Value> args[1] = { jsObject };
 
@@ -145,6 +146,7 @@ void CElmThumb::on_generate_start_set(Handle<Value> val)
 
 void CElmThumb::OnGenerateStop(void *)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.generate_stop));
    Handle<Value> args[1] = { jsObject };
 
@@ -179,6 +181,7 @@ void CElmThumb::on_generate_stop_set(Handle<Value> val)
 
 void CElmThumb::OnGenerateError(void *)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.generate_error));
    Handle<Value> args[1] = { jsObject };
 
@@ -213,6 +216,7 @@ void CElmThumb::on_generate_error_set(Handle<Value> val)
 
 void CElmThumb::OnLoadError(void *)
 {
+   HandleScope scope;
    Handle<Function> callback(Function::Cast(*cb.load_error));
    Handle<Value> args[1] = { jsObject };
 

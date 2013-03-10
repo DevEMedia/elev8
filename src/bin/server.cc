@@ -106,6 +106,7 @@ spawn_and_run(struct Server_Command *command)
      }
 
    splitted_argv = split_argv(command->argc, command->argv);
+   DBG("Executing '%s' with %i argument in directory '%s'.", command->script, command->argc, command->current_dir);
    execute_elev8_script(command->script, command->argc, splitted_argv);
 
 end:
@@ -130,8 +131,9 @@ _cb_conn_data(void *, int, Ecore_Con_Event_Client_Data *ev)
 void
 server_start()
 {
-   if (!(server = ecore_con_server_add(ECORE_CON_LOCAL_SYSTEM, ELEV8_SOCK_PATH,
-                                       ELEV8_SOCK_PORT, NULL)))
+  if (!(server = ecore_con_server_add((Ecore_Con_Type) ((int) ECORE_CON_LOCAL_USER | (int) ECORE_CON_SOCKET_ACTIVATE),
+				      ELEV8_SOCK_PATH,
+				      ELEV8_SOCK_PORT, NULL)))
      {
         ERR("Couldn't create server control socket, check permissions for %s:%d.",
             ELEV8_SOCK_PATH, ELEV8_SOCK_PORT);
@@ -184,7 +186,7 @@ server_shutdown()
    ecore_event_handler_add(ECORE_CON_EVENT_SERVER_ADD,
                        (Ecore_Event_Handler_Cb)_cb_server_add, scw);
 
-   if (!(server = ecore_con_server_connect(ECORE_CON_LOCAL_SYSTEM,
+   if (!(server = ecore_con_server_connect(ECORE_CON_LOCAL_USER,
                                            ELEV8_SOCK_PATH, ELEV8_SOCK_PORT,
                                            NULL)))
      {
@@ -249,7 +251,7 @@ server_spawn(int script_arg, int argc, char *argv[])
    ecore_event_handler_add(ECORE_CON_EVENT_SERVER_ADD,
                        (Ecore_Event_Handler_Cb)_cb_server_add, scw);
 
-   if (!ecore_con_server_connect(ECORE_CON_LOCAL_SYSTEM,
+   if (!ecore_con_server_connect(ECORE_CON_LOCAL_USER,
                                            ELEV8_SOCK_PATH, ELEV8_SOCK_PORT,
                                            NULL))
      {

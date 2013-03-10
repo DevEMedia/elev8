@@ -1,0 +1,11 @@
+[Unit]
+Description=Elev8 javascript preloading service
+Requires=xorg.target
+After=xorg.target
+
+[Service]
+ExecStart=/usr/bin/elev8 --server
+
+[Install]
+Also=elev8d.socket
+

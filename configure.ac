@@ -158,6 +158,7 @@ data/Makefile
 data/images/Makefile
 data/desktop/Makefile
 data/javascript/Makefile
+data/units/Makefile
 ])
 
 #####################################################################

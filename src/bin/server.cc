@@ -106,7 +106,7 @@ spawn_and_run(struct Server_Command *command)
      }
 
    splitted_argv = split_argv(command->argc, command->argv);
-   DBG("Executing '%s' with %i argument in directory '%s'.", command->script, command->argc, command->current_dir);
+   INF("Executing '%s' with %i argument in directory '%s'.", command->script, command->argc, command->current_dir);
    execute_elev8_script(command->script, command->argc, splitted_argv);
 
 end:

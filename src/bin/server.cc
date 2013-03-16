@@ -131,6 +131,7 @@ _cb_conn_data(void *, int, Ecore_Con_Event_Client_Data *ev)
 void
 server_start()
 {
+  INF("Starting IPC server.");
   if (!(server = ecore_con_server_add((Ecore_Con_Type) ((int) ECORE_CON_LOCAL_USER | (int) ECORE_CON_SOCKET_ACTIVATE),
 				      ELEV8_SOCK_PATH,
 				      ELEV8_SOCK_PORT, NULL)))
@@ -144,6 +145,7 @@ server_start()
                           (Ecore_Event_Handler_Cb)_cb_conn_data, NULL);
 
    ecore_con_server_client_limit_set(server, ELEV8_LISTEN_BACKLOG, 0);
+   INF("IPC server started");
 
    load_elev8_modules();
 }

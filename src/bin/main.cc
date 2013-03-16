@@ -398,6 +398,8 @@ flush_garbage_collector(void *, int , void *)
 void
 load_elev8_modules()
 {
+   INF("Loading Elev8 modules");
+   
    global = Persistent<ObjectTemplate>::New(ObjectTemplate::New());
    global->Set(String::NewSymbol("require"), FunctionTemplate::New(require));
    global->Set(String::NewSymbol("__require__"), FunctionTemplate::New(__require__));
@@ -414,6 +416,8 @@ load_elev8_modules()
 
    load_module(String::NewSymbol("elm"), CREATE_NEW_CONTEXT);
    load_module(String::NewSymbol("http"), CREATE_NEW_CONTEXT);
+
+   INF("Elev8 modules loaded");
 }
 
 void

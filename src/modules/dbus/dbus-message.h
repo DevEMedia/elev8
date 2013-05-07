@@ -13,12 +13,12 @@ public:
   static void Init(Handle<Object> target);
   static Handle<Value> NewInstance(DConnection *conn, const Arguments &args);
 
-  EDBus_Message *GetMessage() { return msg; }
+  Eldbus_Message *GetMessage() { return msg; }
 
   static bool IsMessage(Handle<Value> v);
 
 private:
-  DMessage(EDBus_Message *msg_)
+  DMessage(Eldbus_Message *msg_)
     : msg(msg_) {}
   ~DMessage();
 
@@ -39,7 +39,7 @@ private:
   static Handle<Value> NewMethodReturn(const Arguments& args);
   static Handle<Value> NewSignal(const Arguments& args);
 
-  EDBus_Message *msg;
+  Eldbus_Message *msg;
   static Persistent<FunctionTemplate> base_template;
 };
 

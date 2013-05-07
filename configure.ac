@@ -111,7 +111,7 @@ PKG_CHECK_MODULES([ELEMENTARY], [
 	ecore-evas >= 1.0.999
 ])
 PKG_CHECK_MODULES([ECORECON], [ecore-con >= 1.0.999])
-PKG_CHECK_MODULES([EDBUS], [eldbus])
+PKG_CHECK_MODULES([ELDBUS], [eldbus])
 PKG_CHECK_MODULES([EIO], [eio])
 
 # Detect systemd user session directory properly

@@ -13,7 +13,7 @@ public:
   static void Init(Handle<Object> target);
   static Handle<Value> NewInstance(DObject *obj, const Arguments &args);
 
-  EDBus_Proxy *GetProxy() { return proxy; }
+  Eldbus_Proxy *GetProxy() { return proxy; }
   Persistent<Value> properties;
 
 private:
@@ -28,11 +28,11 @@ private:
   static Handle<Value> Send(const Arguments &args);
   static Handle<Value> GetProperties(const Arguments &args);
 
-  static void Send_Cb(void *data, const EDBus_Message *msg, EDBus_Pending *pending);
+  static void Send_Cb(void *data, const Eldbus_Message *msg, Eldbus_Pending *pending);
 
   static Handle<Value> Getter(Local<String> prop, const AccessorInfo& info);
 
-  EDBus_Proxy *proxy;
+  Eldbus_Proxy *proxy;
   DObject *obj;
   char *iface;
 };

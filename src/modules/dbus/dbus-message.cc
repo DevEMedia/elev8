@@ -7,7 +7,7 @@ Persistent<FunctionTemplate> DMessage::base_template;
 
 DMessage::~DMessage()
 {
-  edbus_message_unref(msg);
+  eldbus_message_unref(msg);
 }
 
 void DMessage::Init(Handle<Object> target)
@@ -71,7 +71,7 @@ Handle<Value> DMessage::NewCall(const Arguments& args)
   if (!args[3]->IsString())
     THROW_EXCEPTION("Expecting method as string");
 
-  EDBus_Message *msg = edbus_message_method_call_new(
+  Eldbus_Message *msg = eldbus_message_method_call_new(
      *String::Utf8Value(args[0]),
      *String::Utf8Value(args[1]),
      *String::Utf8Value(args[2]),
@@ -96,7 +96,7 @@ Handle<Value> DMessage::NewSignal(const Arguments& args)
   if (!args[2]->IsString())
     THROW_EXCEPTION("Expecting name as string");
 
-  EDBus_Message *msg = NULL;
+  Eldbus_Message *msg = NULL;
 
   if (!msg)
     THROW_EXCEPTION("Could not build signal message");
@@ -113,7 +113,7 @@ Handle<Value> DMessage::NewMethodReturn(const Arguments& args)
 
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(args.This());
-  EDBus_Message *msg = edbus_message_method_return_new(self->msg);
+  Eldbus_Message *msg = eldbus_message_method_return_new(self->msg);
   if (!msg)
     THROW_EXCEPTION("Could not build reply message");
 
@@ -136,7 +136,7 @@ Handle<Value> DMessage::NewError(const Arguments& args)
   if (!args[1]->IsString())
     THROW_EXCEPTION("Expecting error_msg as string");
 
-  EDBus_Message *msg = edbus_message_error_new(reply->GetMessage(),
+  Eldbus_Message *msg = eldbus_message_error_new(reply->GetMessage(),
      *String::Utf8Value(args[0]),
      *String::Utf8Value(args[1]));
   if (!msg)
@@ -154,7 +154,7 @@ Handle<Value> DMessage::GetPath(Local<String>, const AccessorInfo& info)
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(info.This());
 
-  return scope.Close(String::New(edbus_message_path_get(self->msg)));
+  return scope.Close(String::New(eldbus_message_path_get(self->msg)));
 }
 
 Handle<Value> DMessage::GetInterface(Local<String>, const AccessorInfo& info)
@@ -162,7 +162,7 @@ Handle<Value> DMessage::GetInterface(Local<String>, const AccessorInfo& info)
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(info.This());
 
-  return scope.Close(String::New(edbus_message_interface_get(self->msg)));
+  return scope.Close(String::New(eldbus_message_interface_get(self->msg)));
 }
 
 Handle<Value> DMessage::GetMember(Local<String>, const AccessorInfo& info)
@@ -170,7 +170,7 @@ Handle<Value> DMessage::GetMember(Local<String>, const AccessorInfo& info)
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(info.This());
 
-  return scope.Close(String::New(edbus_message_member_get(self->msg)));
+  return scope.Close(String::New(eldbus_message_member_get(self->msg)));
 }
 
 Handle<Value> DMessage::GetSender(Local<String>, const AccessorInfo& info)
@@ -178,7 +178,7 @@ Handle<Value> DMessage::GetSender(Local<String>, const AccessorInfo& info)
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(info.This());
 
-  return scope.Close(String::New(edbus_message_sender_get(self->msg)));
+  return scope.Close(String::New(eldbus_message_sender_get(self->msg)));
 }
 
 Handle<Value> DMessage::GetSignature(Local<String>, const AccessorInfo& info)
@@ -186,7 +186,7 @@ Handle<Value> DMessage::GetSignature(Local<String>, const AccessorInfo& info)
   HandleScope scope;
   DMessage *self = ObjectWrap::Unwrap<DMessage>(info.This());
 
-  return scope.Close(String::New(edbus_message_signature_get(self->msg)));
+  return scope.Close(String::New(eldbus_message_signature_get(self->msg)));
 }
 
 Handle<Value> DMessage::GetError(Local<String>, const AccessorInfo& info)
@@ -196,7 +196,7 @@ Handle<Value> DMessage::GetError(Local<String>, const AccessorInfo& info)
   const char *name, *text;
   Local<Object> obj = Object::New();
   
-  if (!edbus_message_error_get(self->msg, &name, &text)) {
+  if (!eldbus_message_error_get(self->msg, &name, &text)) {
     name = "success";
     text = "Not an error message";
   }

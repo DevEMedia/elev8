@@ -3,14 +3,14 @@
 
 namespace dbus {
 
-DConnection::DConnection(EDBus_Connection_Type type)
-  : conn(edbus_connection_ref(edbus_connection_get(type)))
+DConnection::DConnection(Eldbus_Connection_Type type)
+  : conn(eldbus_connection_ref(eldbus_connection_get(type)))
 {
 }
 
 DConnection::~DConnection()
 {
-  edbus_connection_unref(conn);
+  eldbus_connection_unref(conn);
 }
 
 void DConnection::Init(Handle<Object> target)
@@ -31,21 +31,21 @@ void DConnection::Init(Handle<Object> target)
 Handle<Value> DConnection::New(const Arguments& args)
 {
   HandleScope scope;
-  EDBus_Connection_Type type;
+  Eldbus_Connection_Type type;
 
   if (args[0]->IsString()) {
     String::Utf8Value v(args[0]->ToString());
 
     if (!strcmp(*v, "session"))
-      type = EDBUS_CONNECTION_TYPE_SESSION;
+      type = ELDBUS_CONNECTION_TYPE_SESSION;
     else if (!strcmp(*v, "system"))
-      type = EDBUS_CONNECTION_TYPE_SYSTEM;
+      type = ELDBUS_CONNECTION_TYPE_SYSTEM;
     else if (!strcmp(*v, "starter"))
-      type = EDBUS_CONNECTION_TYPE_STARTER;
+      type = ELDBUS_CONNECTION_TYPE_STARTER;
     else
       THROW_EXCEPTION("Wrong connection type");
   } else {
-    type = EDBUS_CONNECTION_TYPE_SESSION;
+    type = ELDBUS_CONNECTION_TYPE_SESSION;
   }
 
   DConnection *obj = new DConnection(type);

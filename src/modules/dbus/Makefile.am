@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 -DPACKAGE_BIN_DIR=\"$(bindir)\" \
 -DPACKAGE_DATA_DIR=\"$(datadir)/$(PACKAGE)\" \
 -DPACKAGE_TMP_DIR=\"/tmp\" \
-@EDBUS_CFLAGS@
+@ELDBUS_CFLAGS@
 
 moddir = $(libdir)/$(PACKAGE)/$(MODULE_ARCH)
 mod_LTLIBRARIES = libdbus.la
@@ -20,6 +20,6 @@ libdbus_la_SOURCES = dbus.cc \
 		     dbus-message.cc \
 		     dbus-pending.cc
 
-libdbus_la_LIBADD = @EDBUS_LIBS@ @V8_LIBS@
+libdbus_la_LIBADD = @ELDBUS_LIBS@ @V8_LIBS@
 libdbus_la_LDFLAGS = -module -avoid-version -no-undefined
 libdbus_la_LIBTOOLFLAGS = --tag=disable-static

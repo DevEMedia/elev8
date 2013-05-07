@@ -11,16 +11,16 @@ class DConnection : public ObjectWrap {
 public:
   static void Init(Handle<Object> target);
 
-  EDBus_Connection *GetConnection() { return conn; }
+  Eldbus_Connection *GetConnection() { return conn; }
 
 private:
-  DConnection(EDBus_Connection_Type type);
+  DConnection(Eldbus_Connection_Type type);
   ~DConnection();
 
   static Handle<Value> New(const Arguments& args);
   static Handle<Value> GetObject(const Arguments& args);
 
-  EDBus_Connection *conn;
+  Eldbus_Connection *conn;
 };
 
 }

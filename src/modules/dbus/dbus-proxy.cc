@@ -9,7 +9,7 @@ namespace dbus {
 Persistent<Function> DProxy::constructor;
 
 static Handle<Value> einaValueToValue(Eina_Value *value);
-static void append(EDBus_Message_Iter *iter, Handle<Value> val);
+static void append(Eldbus_Message_Iter *iter, Handle<Value> val);
 
 class DProperties : ObjectWrap
 {
@@ -18,8 +18,8 @@ public:
   static Handle<Value> NewInstance(DObject *obj, const char *iface, const Arguments &args);
 
 private:
-  EDBus_Signal_Handler *sh;
-  EDBus_Proxy *proxy;
+  Eldbus_Signal_Handler *sh;
+  Eldbus_Proxy *proxy;
   char *iface;
 
   DProperties(DObject *obj, const char *_iface);
@@ -29,27 +29,27 @@ private:
   static Handle<Value> New(const Arguments& args);
   static Handle<Value> Getter(Local<String> prop, const AccessorInfo& info);
   static Handle<Value> Setter(Local<String> prop, Local<Value> val, const AccessorInfo& info);
-  static void SetterCb(void *data, const EDBus_Message *msg, EDBus_Pending *pending);
-  static void OnChanged(void *data, const EDBus_Message *msg);
-  static void GetAll(void *data, const EDBus_Message *msg, EDBus_Pending *pending);
-  static bool IsErrorMessage(const EDBus_Message *msg);
+  static void SetterCb(void *data, const Eldbus_Message *msg, Eldbus_Pending *pending);
+  static void OnChanged(void *data, const Eldbus_Message *msg);
+  static void GetAll(void *data, const Eldbus_Message *msg, Eldbus_Pending *pending);
+  static bool IsErrorMessage(const Eldbus_Message *msg);
 };
 
 Persistent<Function> DProperties::constructor;
 
 DProperties::DProperties(DObject *obj, const char *_iface)
 {
-   proxy = edbus_proxy_ref
-      (edbus_proxy_get(obj->GetObject(), "org.freedesktop.DBus.Properties"));
+   proxy = eldbus_proxy_ref
+      (eldbus_proxy_get(obj->GetObject(), "org.freedesktop.DBus.Properties"));
    iface = strdup(_iface);
-   sh = edbus_proxy_signal_handler_add(proxy, "PropertiesChanged", OnChanged, this);
-   edbus_proxy_call(proxy, "GetAll", GetAll, this, -1, "s", iface);
+   sh = eldbus_proxy_signal_handler_add(proxy, "PropertiesChanged", OnChanged, this);
+   eldbus_proxy_call(proxy, "GetAll", GetAll, this, -1, "s", iface);
 }
 
 DProperties::~DProperties()
 {
-  edbus_signal_handler_unref(sh);
-  edbus_proxy_unref(proxy);
+  eldbus_signal_handler_unref(sh);
+  eldbus_proxy_unref(proxy);
   free(iface);
 }
 
@@ -86,19 +86,19 @@ Handle<Value> DProperties::Getter(Local<String>, const AccessorInfo&)
    return Handle<Value>();
 }
 
-bool DProperties::IsErrorMessage(const EDBus_Message *msg)
+bool DProperties::IsErrorMessage(const Eldbus_Message *msg)
 {
    HandleScope scope;
    const char *errname, *errmsg;
 
-   if (!edbus_message_error_get(msg, &errname, &errmsg))
+   if (!eldbus_message_error_get(msg, &errname, &errmsg))
      return false;
 
    ERR("%s: %s\n", errname, errmsg);
    return true;
 }
 
-void DProperties::SetterCb(void *, const EDBus_Message *msg, EDBus_Pending *)
+void DProperties::SetterCb(void *, const Eldbus_Message *msg, Eldbus_Pending *)
 {
    IsErrorMessage(msg);
 }
@@ -108,11 +108,11 @@ Handle<Value> DProperties::Setter(Local<String> prop, Local<Value> val, const Ac
    HandleScope scope;
    DProperties *self = ObjectWrap::Unwrap<DProperties>(info.This());
 
-   EDBus_Message *msg;
-   EDBus_Message_Iter *iter;
+   Eldbus_Message *msg;
+   Eldbus_Message_Iter *iter;
 
-   msg = edbus_proxy_method_call_new(self->proxy, "Set");
-   iter = edbus_message_iter_get(msg);
+   msg = eldbus_proxy_method_call_new(self->proxy, "Set");
+   iter = eldbus_message_iter_get(msg);
 
    append(iter, String::New(self->iface));
    append(iter, prop);
@@ -122,18 +122,18 @@ Handle<Value> DProperties::Setter(Local<String> prop, Local<Value> val, const Ac
    variant->Set(String::NewSymbol("signature"), String::New("v"), DontEnum);
    append(iter, variant);
 
-   edbus_proxy_send(self->proxy, msg, SetterCb, NULL, -1);
+   eldbus_proxy_send(self->proxy, msg, SetterCb, NULL, -1);
    return val;
 }
 
-void DProperties::OnChanged(void *data, const EDBus_Message *msg)
+void DProperties::OnChanged(void *data, const Eldbus_Message *msg)
 {
    HandleScope scope;
 
    if (IsErrorMessage(msg))
      return;
 
-   Eina_Value *ev = edbus_message_to_eina_value(msg);
+   Eina_Value *ev = eldbus_message_to_eina_value(msg);
    Handle<Object> changed =
       einaValueToValue(ev)->ToObject()->Get(1)->ToObject()->Get(0)->ToObject();
 
@@ -141,14 +141,14 @@ void DProperties::OnChanged(void *data, const EDBus_Message *msg)
    self->handle_->ForceSet(changed->Get(0), changed->Get(1)->ToObject()->Get(0));
 }
 
-void DProperties::GetAll(void *data, const EDBus_Message *msg, EDBus_Pending *)
+void DProperties::GetAll(void *data, const Eldbus_Message *msg, Eldbus_Pending *)
 {
    HandleScope scope;
 
    if (IsErrorMessage(msg))
      return;
 
-   Eina_Value *ev = edbus_message_to_eina_value(msg);
+   Eina_Value *ev = eldbus_message_to_eina_value(msg);
    Local<Array> props = Local<Array>::Cast(einaValueToValue(ev)->ToObject()->Get(0));
    DProperties *self = static_cast<DProperties *>(data);
 
@@ -160,7 +160,7 @@ void DProperties::GetAll(void *data, const EDBus_Message *msg, EDBus_Pending *)
 }
 
 DProxy::DProxy(DObject *_obj, const char *_iface)
-  : proxy(edbus_proxy_ref(edbus_proxy_get(_obj->GetObject(), _iface)))
+  : proxy(eldbus_proxy_ref(eldbus_proxy_get(_obj->GetObject(), _iface)))
 {
    obj = _obj;
    iface = strdup(_iface);
@@ -168,7 +168,7 @@ DProxy::DProxy(DObject *_obj, const char *_iface)
 
 DProxy::~DProxy()
 {
-  edbus_proxy_unref(proxy);
+  eldbus_proxy_unref(proxy);
   free(iface);
 }
 
@@ -224,7 +224,7 @@ Handle<Value> DProxy::NewInstance(DObject *obj, const Arguments& args)
 }
 
 struct WrappedMessage {
-  static void Call(Handle<Function> callback, const EDBus_Message *msg);
+  static void Call(Handle<Function> callback, const Eldbus_Message *msg);
 };
 
 Handle<Value> DProxy::Getter(Local<String> prop, const AccessorInfo& info)
@@ -241,22 +241,22 @@ Handle<Value> DProxy::Getter(Local<String> prop, const AccessorInfo& info)
    return scope.Close(func);
 }
 
-void WrappedMessage::Call(Handle<Function> callback, const EDBus_Message *msg)
+void WrappedMessage::Call(Handle<Function> callback, const Eldbus_Message *msg)
 {
    unsigned int argc = 0;
    Eina_Value *ev = NULL;
    Eina_Value_Struct st;
    const char *errname, *errmsg;
 
-   if (edbus_message_error_get(msg, &errname, &errmsg))
+   if (eldbus_message_error_get(msg, &errname, &errmsg))
      {
         ERR("%s: %s", errname, errmsg);
         return;
      }
 
-   if (strlen(edbus_message_signature_get(msg)) > 0)
+   if (strlen(eldbus_message_signature_get(msg)) > 0)
      {
-        ev = edbus_message_to_eina_value(msg);
+        ev = eldbus_message_to_eina_value(msg);
         eina_value_pget(ev, &st);
         argc = st.desc->member_count;
      }
@@ -278,7 +278,7 @@ public:
   WrappedSignalHandler(DProxy *proxy_, const char *signal_name_, Handle<Value> cb_, Handle<Value> data_)
     : cb(Persistent<Value>::New(cb_))
     , data(Persistent<Value>::New(data_))
-    , sh(edbus_proxy_signal_handler_add(proxy_->GetProxy(),
+    , sh(eldbus_proxy_signal_handler_add(proxy_->GetProxy(),
            signal_name_,
            WrappedSignalHandler::Invoke,
            this)) {}
@@ -288,9 +288,9 @@ public:
 private:
   Persistent<Value> cb;
   Persistent<Value> data;
-  EDBus_Signal_Handler *sh;
+  Eldbus_Signal_Handler *sh;
 
-  static void Invoke(void *data, const EDBus_Message *msg);
+  static void Invoke(void *data, const Eldbus_Message *msg);
 };
 
 static Handle<Value> einaValueToValue(Eina_Value *value)
@@ -387,7 +387,7 @@ static Handle<Value> einaValueToValue(Eina_Value *value)
    return val;
 }
 
-void WrappedSignalHandler::Invoke(void *data, const EDBus_Message *msg)
+void WrappedSignalHandler::Invoke(void *data, const Eldbus_Message *msg)
 {
    HandleScope scope;
    WrappedSignalHandler *self = static_cast<WrappedSignalHandler *>(data);
@@ -397,7 +397,7 @@ void WrappedSignalHandler::Invoke(void *data, const EDBus_Message *msg)
 
 WrappedSignalHandler::~WrappedSignalHandler()
 {
-  edbus_signal_handler_unref(sh);
+  eldbus_signal_handler_unref(sh);
 }
 
 Handle<Value> DProxy::AddSignalHandler(const Arguments& args)
@@ -498,7 +498,7 @@ static Local<String> getSignature(Handle<Value> val)
    return getSignature(String::New(""), val);
 }
 
-static void append(EDBus_Message_Iter *iter, Handle<Value> val)
+static void append(Eldbus_Message_Iter *iter, Handle<Value> val)
 {
    if (val->IsUndefined())
      return;
@@ -508,48 +508,48 @@ static void append(EDBus_Message_Iter *iter, Handle<Value> val)
    switch (sig)
      {
       default:
-         edbus_message_iter_basic_append(iter, sig, *String::Utf8Value(val));
+         eldbus_message_iter_basic_append(iter, sig, *String::Utf8Value(val));
          break;
       case 'b':
-         edbus_message_iter_basic_append(iter, sig, val->BooleanValue());
+         eldbus_message_iter_basic_append(iter, sig, val->BooleanValue());
          break;
       case 'n':
       case 'i':
       case 'x':
-         edbus_message_iter_basic_append(iter, sig, val->Int32Value());
+         eldbus_message_iter_basic_append(iter, sig, val->Int32Value());
          break;
       case 'y':
       case 'q':
       case 'u':
       case 't':
-         edbus_message_iter_basic_append(iter, sig, val->ToUint32()->Value());
+         eldbus_message_iter_basic_append(iter, sig, val->ToUint32()->Value());
          break;
       case 'd':
-         edbus_message_iter_basic_append(iter, sig, val->NumberValue());
+         eldbus_message_iter_basic_append(iter, sig, val->NumberValue());
          break;
       case 'e':
            {
-              EDBus_Message_Iter *dict;
+              Eldbus_Message_Iter *dict;
               Local<Object> obj = val->ToObject();
               Local<Array> props = obj->GetOwnPropertyNames();
 
               char *s = strdup(*String::Utf8Value(getSignature(val)));
 
-              edbus_message_iter_arguments_append(iter, s, &dict);
+              eldbus_message_iter_arguments_append(iter, s, &dict);
 
               for (unsigned int i = 0, len = props->Length(); i < len; i++)
                 {
-                   EDBus_Message_Iter *entry;
+                   Eldbus_Message_Iter *entry;
                    Local<Value> key = props->Get(i);
-                   edbus_message_iter_arguments_append(dict, &s[1], &entry);
+                   eldbus_message_iter_arguments_append(dict, &s[1], &entry);
 
                    append(entry, key);
                    append(entry, obj->Get(key));
 
-                   edbus_message_iter_container_close(dict, entry);
+                   eldbus_message_iter_container_close(dict, entry);
                 }
 
-              edbus_message_iter_container_close(iter, dict);
+              eldbus_message_iter_container_close(iter, dict);
               free(s);
               break;
            }
@@ -559,53 +559,53 @@ static void append(EDBus_Message_Iter *iter, Handle<Value> val)
               Local<Array> props = obj->GetOwnPropertyNames();
               Local<Value> v = obj->Get(props->Get(0));
 
-              EDBus_Message_Iter *sub_iter = edbus_message_iter_container_new
+              Eldbus_Message_Iter *sub_iter = eldbus_message_iter_container_new
                  (iter, sig, *String::Utf8Value(getSignature(v)));
 
               append(sub_iter, v);
 
-              edbus_message_iter_container_close(iter, sub_iter);
+              eldbus_message_iter_container_close(iter, sub_iter);
               break;
            }
       case 'a':
            {
               Local<Object> obj = val->ToObject();
               Local<Array> props = obj->GetOwnPropertyNames();
-              EDBus_Message_Iter *sub_iter = edbus_message_iter_container_new
+              Eldbus_Message_Iter *sub_iter = eldbus_message_iter_container_new
                  (iter, sig, &(*String::Utf8Value(getSignature(val)))[1]);
 
               for (unsigned int i = 0, len = props->Length(); i < len; i++)
                 append(sub_iter, obj->Get(props->Get(i)));
 
-              edbus_message_iter_container_close(iter, sub_iter);
+              eldbus_message_iter_container_close(iter, sub_iter);
               break;
            }
       case 'r':
            {
-              EDBus_Message_Iter *sub_iter;
+              Eldbus_Message_Iter *sub_iter;
               Local<Object> obj = val->ToObject();
               Local<Array> props = obj->GetOwnPropertyNames();
 
-              edbus_message_iter_arguments_append
+              eldbus_message_iter_arguments_append
                  (iter, *String::Utf8Value(getSignature(val)), &sub_iter);
 
               for (unsigned int i = 0, len = props->Length(); i < len; i++)
                 append(sub_iter, obj->Get(props->Get(i)));
 
-              edbus_message_iter_container_close(iter, sub_iter);
+              eldbus_message_iter_container_close(iter, sub_iter);
               break;
            }
      }
 }
 
-void DProxy::Send_Cb(void *, const EDBus_Message *msg, EDBus_Pending *pending)
+void DProxy::Send_Cb(void *, const Eldbus_Message *msg, Eldbus_Pending *pending)
 {
    HandleScope scope;
 
    const char *errname, *errmsg;
    Handle<Object> obj = DPending::ToObject(pending);
 
-   if (edbus_message_error_get(msg, &errname, &errmsg))
+   if (eldbus_message_error_get(msg, &errname, &errmsg))
      {
         Local<Value> on_error = obj->GetHiddenValue(String::New("onError"));
         if (on_error.IsEmpty())
@@ -628,9 +628,9 @@ void DProxy::Send_Cb(void *, const EDBus_Message *msg, EDBus_Pending *pending)
    Eina_Value_Struct st;
    unsigned int argc = 0;
 
-   if (strlen(edbus_message_signature_get(msg)) > 0)
+   if (strlen(eldbus_message_signature_get(msg)) > 0)
      {
-        ev = edbus_message_to_eina_value(msg);
+        ev = eldbus_message_to_eina_value(msg);
         eina_value_pget(ev, &st);
         argc = st.desc->member_count;
      }
@@ -654,9 +654,9 @@ Handle<Value> DProxy::Send(const Arguments& args)
 
    DProxy *self = ObjectWrap::Unwrap<DProxy>(args.This());
 
-   EDBus_Message *msg;
-   EDBus_Pending *pending;
-   EDBus_Message_Iter *iter;
+   Eldbus_Message *msg;
+   Eldbus_Pending *pending;
+   Eldbus_Message_Iter *iter;
 
    Local<Value> method = args.Callee()->Get(String::New("method"));
    unsigned int args_cnt = 0;
@@ -664,13 +664,13 @@ Handle<Value> DProxy::Send(const Arguments& args)
    if (method->IsUndefined())
      method = args[args_cnt++];
 
-   msg = edbus_proxy_method_call_new(self->proxy, *String::Utf8Value(method));
-   iter = edbus_message_iter_get(msg);
+   msg = eldbus_proxy_method_call_new(self->proxy, *String::Utf8Value(method));
+   iter = eldbus_message_iter_get(msg);
 
    for (unsigned int len = args.Length(); args_cnt < len; args_cnt++)
      append(iter, args[args_cnt]);
 
-   pending = edbus_proxy_send(self->proxy, msg, Send_Cb, NULL, -1);
+   pending = eldbus_proxy_send(self->proxy, msg, Send_Cb, NULL, -1);
 
    return scope.Close(DPending::NewInstance(pending));
 }

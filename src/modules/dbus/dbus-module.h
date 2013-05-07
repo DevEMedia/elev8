@@ -1,7 +1,7 @@
 #ifndef DBUS_MODULE_H
 #define DBUS_MODULE_H
 
-#include <EDBus.h>
+#include <Eldbus.h>
 #include <v8.h>
 #include "node_object_wrap.h"
 

@@ -1,5 +1,5 @@
 #include <Ecore.h>
-#include <EDBus.h>
+#include <Eldbus.h>
 #include <v8.h>
 #include "node_object_wrap.h"
 
@@ -107,7 +107,7 @@ void RegisterModule(Handle<Object> target)
   INF("Initializing dbus module with log domain %d", dbus::_log_domain);
 
   ecore_init();
-  edbus_init();
+  eldbus_init();
 
   target->Set(String::NewSymbol("Boolean"), FunctionTemplate::New(DBoolean)->GetFunction());
   target->Set(String::NewSymbol("Byte"), FunctionTemplate::New(DByte)->GetFunction());

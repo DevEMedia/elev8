@@ -8,19 +8,19 @@ using namespace v8;
 namespace dbus {
 
 class DPending : public ObjectWrap {
-  EDBus_Pending *pending;
+  Eldbus_Pending *pending;
 public:
   static void Init(Handle<Object> target);
 
-  EDBus_Connection *GetConnection() { return conn; }
-  static Handle<Value> NewInstance(EDBus_Pending *pending);
-  static Handle<Object> ToObject(EDBus_Pending *pending);
+  Eldbus_Connection *GetConnection() { return conn; }
+  static Handle<Value> NewInstance(Eldbus_Pending *pending);
+  static Handle<Object> ToObject(Eldbus_Pending *pending);
 
 private:
 
   static Persistent<Function> constructor;
 
-  DPending(EDBus_Pending *pending_);
+  DPending(Eldbus_Pending *pending_);
 
   static void FreeCb(void *data, const void *deadptr);
 
@@ -35,7 +35,7 @@ private:
   static Handle<Value> Method(Local<String>, const AccessorInfo& info);
   static Handle<Value> Path(Local<String>, const AccessorInfo& info);
 
-  EDBus_Connection *conn;
+  Eldbus_Connection *conn;
 };
 
 }

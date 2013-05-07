@@ -13,7 +13,7 @@ public:
   static void Init(Handle<Object> target);
   static Handle<Value> NewInstance(DConnection *conn, const Arguments &args);
 
-  EDBus_Object *GetObject() { return obj; }
+  Eldbus_Object *GetObject() { return obj; }
 
 private:
   DObject(DConnection *connection, const char *bus, const char *path);
@@ -24,7 +24,7 @@ private:
   static Handle<Value> Send(const Arguments& args);
   static Handle<Value> GetProxy(const Arguments& args);
 
-  EDBus_Object *obj;
+  Eldbus_Object *obj;
 };
 
 }

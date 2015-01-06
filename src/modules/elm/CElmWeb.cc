@@ -114,7 +114,7 @@ void CElmWeb::tab_propagate_set(Handle<Value> val)
 
 Handle<Value> CElmWeb::uri_get() const
 {
-   const char *current_uri = elm_web_uri_get(eo);
+   const char *current_uri = elm_web_url_get(eo);
 
    return current_uri ? String::New(current_uri) : Undefined();
 }
@@ -122,7 +122,7 @@ Handle<Value> CElmWeb::uri_get() const
 void CElmWeb::uri_set(Handle<Value> val)
 {
    if (val->IsString())
-     elm_web_uri_set(eo, *String::Utf8Value(val));
+     elm_web_url_set(eo, *String::Utf8Value(val));
 }
 
 Handle<Value> CElmWeb::bg_color_get() const
@@ -398,7 +398,7 @@ void CElmWeb::on_uri_change_set(Handle<Value> val)
 void CElmWeb::OnUriChange()
 {
    HandleScope scope;
-   const char *uri = elm_web_uri_get(eo);
+   const char *uri = elm_web_url_get(eo);
    Handle<Function> callback(Function::Cast(*cb.on_uri_change));
    Handle<Value> args[1] = { String::New(uri ? uri : "") };
    callback->Call(jsObject, 1, args);

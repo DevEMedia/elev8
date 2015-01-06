@@ -51,13 +51,13 @@ void CElmFileSelectorButton::win_title_set(Handle<Value> val)
 
 Handle<Value> CElmFileSelectorButton::path_get() const
 {
-   return String::New(elm_fileselector_button_path_get(eo));
+   return String::New(elm_fileselector_path_get(eo));
 }
 
 void CElmFileSelectorButton::path_set(Handle<Value> val)
 {
    if (val->IsString() || val->IsNumber())
-     elm_fileselector_button_path_set(eo, *String::Utf8Value(val));
+     elm_fileselector_path_set(eo, *String::Utf8Value(val));
 }
 
 void CElmFileSelectorButton::win_size_set(Handle<Value> val)
@@ -88,32 +88,32 @@ Handle<Value> CElmFileSelectorButton::win_size_get(void) const
 
 Handle<Value> CElmFileSelectorButton::expandable_get() const
 {
-   return Boolean::New(elm_fileselector_button_expandable_get(eo));
+   return Boolean::New(elm_fileselector_expandable_get(eo));
 }
 
 void CElmFileSelectorButton::expandable_set(Handle<Value> val)
 {
-   elm_fileselector_button_expandable_set(eo, val->BooleanValue());
+   elm_fileselector_expandable_set(eo, val->BooleanValue());
 }
 
 Handle<Value> CElmFileSelectorButton::folder_only_get() const
 {
-   return Boolean::New(elm_fileselector_button_folder_only_get(eo));
+   return Boolean::New(elm_fileselector_folder_only_get(eo));
 }
 
 void CElmFileSelectorButton::folder_only_set(Handle<Value> val)
 {
-   elm_fileselector_button_folder_only_set(eo, val->BooleanValue());
+   elm_fileselector_folder_only_set(eo, val->BooleanValue());
 }
 
 Handle<Value> CElmFileSelectorButton::is_save_get() const
 {
-   return Boolean::New(elm_fileselector_button_is_save_get (eo));
+   return Boolean::New(elm_fileselector_is_save_get (eo));
 }
 
 void CElmFileSelectorButton::is_save_set(Handle<Value> val)
 {
-   elm_fileselector_button_is_save_set(eo, val->BooleanValue());
+   elm_fileselector_is_save_set(eo, val->BooleanValue());
 }
 
 Handle<Value> CElmFileSelectorButton::inwin_mode_get() const

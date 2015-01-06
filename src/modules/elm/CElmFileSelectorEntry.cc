@@ -68,26 +68,26 @@ void CElmFileSelectorEntry::win_title_set(Handle<Value> val)
 
 Handle<Value> CElmFileSelectorEntry::selected_get() const
 {
-   const char *entry_selected = elm_fileselector_entry_selected_get(eo);
+   const char *entry_selected = elm_fileselector_selected_get(eo);
    return entry_selected ? String::New(entry_selected) : Undefined();
 }
 
 void CElmFileSelectorEntry::selected_set(Handle<Value> val)
 {
    if (val->IsString())
-     elm_fileselector_entry_selected_set(eo, *String::Utf8Value(val));
+     elm_fileselector_selected_set(eo, *String::Utf8Value(val));
 }
 
 Handle<Value> CElmFileSelectorEntry::path_get() const
 {
-   const char *entry_path = elm_fileselector_entry_path_get(eo);
+   const char *entry_path = elm_fileselector_path_get(eo);
    return entry_path ? String::New(entry_path) : Undefined();
 }
 
 void CElmFileSelectorEntry::path_set(Handle<Value> val)
 {
    if (val->IsString())
-     elm_fileselector_entry_path_set(eo, *String::Utf8Value(val));
+     elm_fileselector_path_set(eo, *String::Utf8Value(val));
 }
 
 void CElmFileSelectorEntry::win_size_set(Handle<Value> val)
@@ -116,30 +116,30 @@ Handle<Value> CElmFileSelectorEntry::win_size_get(void) const
 
 Handle<Value> CElmFileSelectorEntry::expandable_get() const
 {
-   return Boolean::New(elm_fileselector_entry_expandable_get(eo));
+   return Boolean::New(elm_fileselector_expandable_get(eo));
 }
 
 void CElmFileSelectorEntry::expandable_set(Handle<Value> val)
 {
-   elm_fileselector_entry_expandable_set(eo, val->BooleanValue());
+   elm_fileselector_expandable_set(eo, val->BooleanValue());
 }
 Handle<Value> CElmFileSelectorEntry::folder_only_get() const
 {
-   return Boolean::New(elm_fileselector_entry_folder_only_get(eo));
+   return Boolean::New(elm_fileselector_folder_only_get(eo));
 }
 
 void CElmFileSelectorEntry::folder_only_set(Handle<Value> val)
 {
-   elm_fileselector_entry_folder_only_set(eo, val->BooleanValue());
+   elm_fileselector_folder_only_set(eo, val->BooleanValue());
 }
 Handle<Value> CElmFileSelectorEntry::is_save_get() const
 {
-   return Boolean::New(elm_fileselector_entry_is_save_get (eo));
+   return Boolean::New(elm_fileselector_is_save_get (eo));
 }
 
 void CElmFileSelectorEntry::is_save_set(Handle<Value> val)
 {
-   elm_fileselector_entry_is_save_set(eo, val->BooleanValue());
+   elm_fileselector_is_save_set(eo, val->BooleanValue());
 }
 
 Handle<Value> CElmFileSelectorEntry::inwin_mode_get() const
